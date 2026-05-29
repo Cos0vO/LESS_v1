@@ -1,0 +1,17 @@
+{
+  "trace_path": "/tmp/less_phase2_roundscan_noreuse.jsonl",
+  "round_limit": 8,
+  "has_monomial_branch": true,
+  "monomial_count": 3,
+  "apply_cf_count": 5,
+  "rounds_seen": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ]
+}

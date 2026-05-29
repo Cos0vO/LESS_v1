@@ -1,0 +1,59 @@
+{
+  "all_rref_entry_exit_base_addresses_stable": true,
+  "all_snapshot_lengths_valid": true,
+  "first_stage": "verify_begin",
+  "last_stage": "verify_end",
+  "record_count": 133,
+  "record_type_counts": {
+    "control": 2,
+    "event": 126,
+    "snapshot": 5
+  },
+  "rref_entry_exit_base_address_checks": [
+    {
+      "entry_base_address": "0x16f88d900",
+      "exit_base_address": "0x16f88d900",
+      "key": [
+        1,
+        0,
+        "G_prime",
+        "generator_RREF"
+      ],
+      "matched": true
+    }
+  ],
+  "rref_event_summary": {
+    "duration_ns_max": 213000,
+    "duration_ns_mean": 56690,
+    "duration_ns_min": 51000,
+    "event_stage_counts": {
+      "generator_rref_step": 126
+    },
+    "reuse_hit_count": 0,
+    "row_swap_count": 69,
+    "step_count": 126
+  },
+  "snapshot_durations_ns": {
+    "g0_expand_to_rref_exit": 60000,
+    "g0_rref_expand_exit": 27000,
+    "g_prime_apply_cf_action_exit": 32000,
+    "g_prime_rref_entry": 0,
+    "g_prime_rref_exit": 8157000
+  },
+  "snapshot_length_mismatches": [],
+  "stage_counts": {
+    "g0_expand_to_rref_exit": 1,
+    "g0_rref_expand_exit": 1,
+    "g_prime_apply_cf_action_exit": 1,
+    "g_prime_rref_entry": 1,
+    "g_prime_rref_exit": 1,
+    "generator_rref_step": 126,
+    "verify_begin": 1,
+    "verify_end": 1
+  },
+  "trace_path": "audit/phase2/sample_trace_252_45_round1_noreuse.jsonl",
+  "verify_sequence_count": 1,
+  "verify_sequences": [
+    1
+  ]
+}

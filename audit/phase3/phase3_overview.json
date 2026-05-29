@@ -1,0 +1,1229 @@
+{
+  "252_45": {
+    "comparison": {
+      "correct_faster": false,
+      "dominant_internal_stage": "verify_end_ns",
+      "median_gap_ns": -12000,
+      "median_ratio": 0.9995645389556193,
+      "stable_distinguishable": false
+    },
+    "input_files": {
+      "timings": "audit/phase3/phase3_timings_252_45.ndjson",
+      "trace_source": "audit/phase3/phase3_trace_source_252_45.jsonl"
+    },
+    "parameter_tag": "252_45",
+    "sample_counts": {
+      "trace_record_count": 11880,
+      "trace_rows": 90,
+      "wall_rows": 600
+    },
+    "target_info": {
+      "sf_g_index": 4,
+      "source_col": 126,
+      "target_output_col": 62,
+      "target_round": 0
+    },
+    "trace_stats": {
+      "correct": {
+        "g0_expand_to_rref_exit_ns": {
+          "count": 30,
+          "max": 88000,
+          "mean": 43666.666666666664,
+          "min": 40000,
+          "p05": 40000,
+          "p50": 41000,
+          "p95": 65000,
+          "stddev": 9491.678145775304
+        },
+        "g_prime_apply_cf_action_with_pivots_exit_ns": {
+          "count": 30,
+          "max": 15000,
+          "mean": 12366.666666666666,
+          "min": 11000,
+          "p05": 12000,
+          "p50": 12000,
+          "p95": 14000,
+          "stddev": 808.7168778415269
+        },
+        "g_prime_rref_entry_ns": {
+          "count": 30,
+          "max": 0,
+          "mean": 0.0,
+          "min": 0,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "stddev": 0.0
+        },
+        "g_prime_rref_exit_ns": {
+          "count": 30,
+          "max": 1134000,
+          "mean": 813633.3333333334,
+          "min": 752000,
+          "p05": 755000,
+          "p50": 776000,
+          "p95": 1031000,
+          "stddev": 87969.2279008476
+        },
+        "reuse_hit_count": {
+          "count": 30,
+          "max": 62,
+          "mean": 62.0,
+          "min": 62,
+          "p05": 62,
+          "p50": 62,
+          "p95": 62,
+          "stddev": 0.0
+        },
+        "row_swap_count": {
+          "count": 30,
+          "max": 1,
+          "mean": 0.6,
+          "min": 0,
+          "p05": 0,
+          "p50": 1,
+          "p95": 1,
+          "stddev": 0.4982728791224398
+        },
+        "rref_event_mean_ns": {
+          "count": 30,
+          "max": 2214.285714285714,
+          "mean": 1536.7724867724867,
+          "min": 1404.7619047619048,
+          "p05": 1428.5714285714287,
+          "p50": 1484.126984126984,
+          "p95": 2182.5396825396824,
+          "stddev": 187.95636818932743
+        },
+        "rref_event_step_count": {
+          "count": 30,
+          "max": 126,
+          "mean": 126.0,
+          "min": 126,
+          "p05": 126,
+          "p50": 126,
+          "p95": 126,
+          "stddev": 0.0
+        },
+        "rref_event_total_ns": {
+          "count": 30,
+          "max": 279000,
+          "mean": 193633.33333333334,
+          "min": 177000,
+          "p05": 180000,
+          "p50": 187000,
+          "p95": 275000,
+          "stddev": 23682.502391855254
+        },
+        "verify_begin_ns": {
+          "count": 30,
+          "max": 0,
+          "mean": 0.0,
+          "min": 0,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "stddev": 0.0
+        },
+        "verify_end_ns": {
+          "count": 30,
+          "max": 44287000,
+          "mean": 37016066.666666664,
+          "min": 35654000,
+          "p05": 35933000,
+          "p50": 36485000,
+          "p95": 39082000,
+          "stddev": 1635348.659088211
+        }
+      },
+      "legal": {
+        "g0_expand_to_rref_exit_ns": {
+          "count": 30,
+          "max": 43000,
+          "mean": 40900.0,
+          "min": 40000,
+          "p05": 40000,
+          "p50": 41000,
+          "p95": 43000,
+          "stddev": 884.7364696279086
+        },
+        "g_prime_apply_cf_action_with_pivots_exit_ns": {
+          "count": 30,
+          "max": 13000,
+          "mean": 12033.333333333334,
+          "min": 11000,
+          "p05": 12000,
+          "p50": 12000,
+          "p95": 13000,
+          "stddev": 319.841914974746
+        },
+        "g_prime_rref_entry_ns": {
+          "count": 30,
+          "max": 0,
+          "mean": 0.0,
+          "min": 0,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "stddev": 0.0
+        },
+        "g_prime_rref_exit_ns": {
+          "count": 30,
+          "max": 878000,
+          "mean": 790100.0,
+          "min": 754000,
+          "p05": 755000,
+          "p50": 772000,
+          "p95": 874000,
+          "stddev": 35148.306478063234
+        },
+        "reuse_hit_count": {
+          "count": 30,
+          "max": 62,
+          "mean": 62.0,
+          "min": 62,
+          "p05": 62,
+          "p50": 62,
+          "p95": 62,
+          "stddev": 0.0
+        },
+        "row_swap_count": {
+          "count": 30,
+          "max": 0,
+          "mean": 0.0,
+          "min": 0,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "stddev": 0.0
+        },
+        "rref_event_mean_ns": {
+          "count": 30,
+          "max": 1619.047619047619,
+          "mean": 1470.899470899471,
+          "min": 1412.6984126984128,
+          "p05": 1412.6984126984128,
+          "p50": 1460.3174603174602,
+          "p95": 1531.7460317460318,
+          "stddev": 43.236242850925564
+        },
+        "rref_event_step_count": {
+          "count": 30,
+          "max": 126,
+          "mean": 126.0,
+          "min": 126,
+          "p05": 126,
+          "p50": 126,
+          "p95": 126,
+          "stddev": 0.0
+        },
+        "rref_event_total_ns": {
+          "count": 30,
+          "max": 204000,
+          "mean": 185333.33333333334,
+          "min": 178000,
+          "p05": 178000,
+          "p50": 184000,
+          "p95": 193000,
+          "stddev": 5447.766599216621
+        },
+        "verify_begin_ns": {
+          "count": 30,
+          "max": 0,
+          "mean": 0.0,
+          "min": 0,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "stddev": 0.0
+        },
+        "verify_end_ns": {
+          "count": 30,
+          "max": 44310000,
+          "mean": 36494200.0,
+          "min": 35450000,
+          "p05": 35555000,
+          "p50": 35927000,
+          "p95": 38293000,
+          "stddev": 1635334.7100190541
+        }
+      },
+      "wrong": {
+        "g0_expand_to_rref_exit_ns": {
+          "count": 30,
+          "max": 49000,
+          "mean": 41800.0,
+          "min": 40000,
+          "p05": 40000,
+          "p50": 41000,
+          "p95": 44000,
+          "stddev": 1808.0280742403806
+        },
+        "g_prime_apply_cf_action_with_pivots_exit_ns": {
+          "count": 30,
+          "max": 15000,
+          "mean": 12366.666666666666,
+          "min": 11000,
+          "p05": 12000,
+          "p50": 12000,
+          "p95": 14000,
+          "stddev": 850.2873077655144
+        },
+        "g_prime_rref_entry_ns": {
+          "count": 30,
+          "max": 0,
+          "mean": 0.0,
+          "min": 0,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "stddev": 0.0
+        },
+        "g_prime_rref_exit_ns": {
+          "count": 30,
+          "max": 886000,
+          "mean": 790766.6666666666,
+          "min": 744000,
+          "p05": 757000,
+          "p50": 771000,
+          "p95": 875000,
+          "stddev": 36829.226899610425
+        },
+        "reuse_hit_count": {
+          "count": 30,
+          "max": 62,
+          "mean": 62.0,
+          "min": 62,
+          "p05": 62,
+          "p50": 62,
+          "p95": 62,
+          "stddev": 0.0
+        },
+        "row_swap_count": {
+          "count": 30,
+          "max": 1,
+          "mean": 0.4,
+          "min": 0,
+          "p05": 0,
+          "p50": 0,
+          "p95": 1,
+          "stddev": 0.4982728791224398
+        },
+        "rref_event_mean_ns": {
+          "count": 30,
+          "max": 1515.873015873016,
+          "mean": 1462.6984126984128,
+          "min": 1412.6984126984128,
+          "p05": 1428.5714285714287,
+          "p50": 1460.3174603174602,
+          "p95": 1507.936507936508,
+          "stddev": 25.368587202203887
+        },
+        "rref_event_step_count": {
+          "count": 30,
+          "max": 126,
+          "mean": 126.0,
+          "min": 126,
+          "p05": 126,
+          "p50": 126,
+          "p95": 126,
+          "stddev": 0.0
+        },
+        "rref_event_total_ns": {
+          "count": 30,
+          "max": 191000,
+          "mean": 184300.0,
+          "min": 178000,
+          "p05": 180000,
+          "p50": 184000,
+          "p95": 190000,
+          "stddev": 3196.441987477693
+        },
+        "verify_begin_ns": {
+          "count": 30,
+          "max": 0,
+          "mean": 0.0,
+          "min": 0,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "stddev": 0.0
+        },
+        "verify_end_ns": {
+          "count": 30,
+          "max": 54124000,
+          "mean": 38256666.666666664,
+          "min": 35359000,
+          "p05": 35684000,
+          "p50": 36549000,
+          "p95": 52740000,
+          "stddev": 5135614.822900507
+        }
+      }
+    },
+    "verify_result_counts": {
+      "correct": {
+        "failure": 200,
+        "success": 0
+      },
+      "legal": {
+        "failure": 0,
+        "success": 200
+      },
+      "wrong": {
+        "failure": 200,
+        "success": 0
+      }
+    },
+    "wall_stats": {
+      "correct": {
+        "count": 200,
+        "max": 58717000,
+        "mean": 28041010.0,
+        "min": 25960000,
+        "p05": 26573000,
+        "p50": 27557000,
+        "p95": 30363000,
+        "stddev": 2727266.8336283206
+      },
+      "legal": {
+        "count": 200,
+        "max": 34234000,
+        "mean": 27558310.0,
+        "min": 26441000,
+        "p05": 26523000,
+        "p50": 27154000,
+        "p95": 29580000,
+        "stddev": 1142892.4180763832
+      },
+      "wrong": {
+        "count": 200,
+        "max": 34659000,
+        "mean": 27949500.0,
+        "min": 26419000,
+        "p05": 26600000,
+        "p50": 27545000,
+        "p95": 30288000,
+        "stddev": 1256982.5118814819
+      }
+    }
+  },
+  "252_68": {
+    "comparison": {
+      "correct_faster": false,
+      "dominant_internal_stage": "verify_end_ns",
+      "median_gap_ns": -104000,
+      "median_ratio": 0.997427079983177,
+      "stable_distinguishable": false
+    },
+    "input_files": {
+      "timings": "audit/phase3/phase3_timings_252_68.ndjson",
+      "trace_source": "audit/phase3/phase3_trace_source_252_68.jsonl"
+    },
+    "parameter_tag": "252_68",
+    "sample_counts": {
+      "trace_record_count": 11880,
+      "trace_rows": 90,
+      "wall_rows": 600
+    },
+    "target_info": {
+      "sf_g_index": 1,
+      "source_col": 128,
+      "target_output_col": 66,
+      "target_round": 0
+    },
+    "trace_stats": {
+      "correct": {
+        "g0_expand_to_rref_exit_ns": {
+          "count": 30,
+          "max": 43000,
+          "mean": 40800.0,
+          "min": 40000,
+          "p05": 40000,
+          "p50": 41000,
+          "p95": 42000,
+          "stddev": 714.3842296595068
+        },
+        "g_prime_apply_cf_action_with_pivots_exit_ns": {
+          "count": 30,
+          "max": 14000,
+          "mean": 12233.333333333334,
+          "min": 11000,
+          "p05": 11000,
+          "p50": 12000,
+          "p95": 14000,
+          "stddev": 678.9105539243627
+        },
+        "g_prime_rref_entry_ns": {
+          "count": 30,
+          "max": 0,
+          "mean": 0.0,
+          "min": 0,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "stddev": 0.0
+        },
+        "g_prime_rref_exit_ns": {
+          "count": 30,
+          "max": 1029000,
+          "mean": 801700.0,
+          "min": 740000,
+          "p05": 742000,
+          "p50": 773000,
+          "p95": 1008000,
+          "stddev": 69877.79974034475
+        },
+        "reuse_hit_count": {
+          "count": 30,
+          "max": 66,
+          "mean": 66.0,
+          "min": 66,
+          "p05": 66,
+          "p50": 66,
+          "p95": 66,
+          "stddev": 0.0
+        },
+        "row_swap_count": {
+          "count": 30,
+          "max": 1,
+          "mean": 0.6,
+          "min": 0,
+          "p05": 0,
+          "p50": 1,
+          "p95": 1,
+          "stddev": 0.4982728791224398
+        },
+        "rref_event_mean_ns": {
+          "count": 30,
+          "max": 1785.7142857142858,
+          "mean": 1398.1481481481483,
+          "min": 1325.3968253968253,
+          "p05": 1325.3968253968253,
+          "p50": 1373.015873015873,
+          "p95": 1571.4285714285713,
+          "stddev": 89.84171790262084
+        },
+        "rref_event_step_count": {
+          "count": 30,
+          "max": 126,
+          "mean": 126.0,
+          "min": 126,
+          "p05": 126,
+          "p50": 126,
+          "p95": 126,
+          "stddev": 0.0
+        },
+        "rref_event_total_ns": {
+          "count": 30,
+          "max": 225000,
+          "mean": 176166.66666666666,
+          "min": 167000,
+          "p05": 167000,
+          "p50": 173000,
+          "p95": 198000,
+          "stddev": 11320.056455730226
+        },
+        "verify_begin_ns": {
+          "count": 30,
+          "max": 0,
+          "mean": 0.0,
+          "min": 0,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "stddev": 0.0
+        },
+        "verify_end_ns": {
+          "count": 30,
+          "max": 68934000,
+          "mean": 51332766.666666664,
+          "min": 49510000,
+          "p05": 49518000,
+          "p50": 50335000,
+          "p95": 54403000,
+          "stddev": 3522568.877311315
+        }
+      },
+      "legal": {
+        "g0_expand_to_rref_exit_ns": {
+          "count": 30,
+          "max": 48000,
+          "mean": 41600.0,
+          "min": 40000,
+          "p05": 40000,
+          "p50": 41000,
+          "p95": 48000,
+          "stddev": 2010.3182112155348
+        },
+        "g_prime_apply_cf_action_with_pivots_exit_ns": {
+          "count": 30,
+          "max": 15000,
+          "mean": 12433.333333333334,
+          "min": 11000,
+          "p05": 11000,
+          "p50": 12000,
+          "p95": 15000,
+          "stddev": 971.4309861845771
+        },
+        "g_prime_rref_entry_ns": {
+          "count": 30,
+          "max": 0,
+          "mean": 0.0,
+          "min": 0,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "stddev": 0.0
+        },
+        "g_prime_rref_exit_ns": {
+          "count": 30,
+          "max": 855000,
+          "mean": 774733.3333333334,
+          "min": 740000,
+          "p05": 742000,
+          "p50": 757000,
+          "p95": 851000,
+          "stddev": 34461.30597054328
+        },
+        "reuse_hit_count": {
+          "count": 30,
+          "max": 66,
+          "mean": 66.0,
+          "min": 66,
+          "p05": 66,
+          "p50": 66,
+          "p95": 66,
+          "stddev": 0.0
+        },
+        "row_swap_count": {
+          "count": 30,
+          "max": 0,
+          "mean": 0.0,
+          "min": 0,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "stddev": 0.0
+        },
+        "rref_event_mean_ns": {
+          "count": 30,
+          "max": 1452.3809523809523,
+          "mean": 1373.2804232804233,
+          "min": 1325.3968253968253,
+          "p05": 1333.3333333333333,
+          "p50": 1365.079365079365,
+          "p95": 1436.5079365079366,
+          "stddev": 32.78826467772574
+        },
+        "rref_event_step_count": {
+          "count": 30,
+          "max": 126,
+          "mean": 126.0,
+          "min": 126,
+          "p05": 126,
+          "p50": 126,
+          "p95": 126,
+          "stddev": 0.0
+        },
+        "rref_event_total_ns": {
+          "count": 30,
+          "max": 183000,
+          "mean": 173033.33333333334,
+          "min": 167000,
+          "p05": 168000,
+          "p50": 172000,
+          "p95": 181000,
+          "stddev": 4131.321349393439
+        },
+        "verify_begin_ns": {
+          "count": 30,
+          "max": 0,
+          "mean": 0.0,
+          "min": 0,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "stddev": 0.0
+        },
+        "verify_end_ns": {
+          "count": 30,
+          "max": 63718000,
+          "mean": 50935266.666666664,
+          "min": 49265000,
+          "p05": 49372000,
+          "p50": 50099000,
+          "p95": 54296000,
+          "stddev": 2706630.3128751647
+        }
+      },
+      "wrong": {
+        "g0_expand_to_rref_exit_ns": {
+          "count": 30,
+          "max": 47000,
+          "mean": 41266.666666666664,
+          "min": 40000,
+          "p05": 40000,
+          "p50": 41000,
+          "p95": 45000,
+          "stddev": 1574.2175578808128
+        },
+        "g_prime_apply_cf_action_with_pivots_exit_ns": {
+          "count": 30,
+          "max": 15000,
+          "mean": 12333.333333333334,
+          "min": 11000,
+          "p05": 12000,
+          "p50": 12000,
+          "p95": 14000,
+          "stddev": 844.1822541139559
+        },
+        "g_prime_rref_entry_ns": {
+          "count": 30,
+          "max": 0,
+          "mean": 0.0,
+          "min": 0,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "stddev": 0.0
+        },
+        "g_prime_rref_exit_ns": {
+          "count": 30,
+          "max": 1103000,
+          "mean": 789900.0,
+          "min": 742000,
+          "p05": 744000,
+          "p50": 760000,
+          "p95": 867000,
+          "stddev": 69900.1011296195
+        },
+        "reuse_hit_count": {
+          "count": 30,
+          "max": 66,
+          "mean": 66.0,
+          "min": 66,
+          "p05": 66,
+          "p50": 66,
+          "p95": 66,
+          "stddev": 0.0
+        },
+        "row_swap_count": {
+          "count": 30,
+          "max": 2,
+          "mean": 0.6,
+          "min": 0,
+          "p05": 0,
+          "p50": 0,
+          "p95": 2,
+          "stddev": 0.8136762043449725
+        },
+        "rref_event_mean_ns": {
+          "count": 30,
+          "max": 1619.047619047619,
+          "mean": 1379.100529100529,
+          "min": 1325.3968253968253,
+          "p05": 1325.3968253968253,
+          "p50": 1365.079365079365,
+          "p95": 1587.3015873015872,
+          "stddev": 64.22954743022969
+        },
+        "rref_event_step_count": {
+          "count": 30,
+          "max": 126,
+          "mean": 126.0,
+          "min": 126,
+          "p05": 126,
+          "p50": 126,
+          "p95": 126,
+          "stddev": 0.0
+        },
+        "rref_event_total_ns": {
+          "count": 30,
+          "max": 204000,
+          "mean": 173766.66666666666,
+          "min": 167000,
+          "p05": 167000,
+          "p50": 172000,
+          "p95": 200000,
+          "stddev": 8092.922976208941
+        },
+        "verify_begin_ns": {
+          "count": 30,
+          "max": 0,
+          "mean": 0.0,
+          "min": 0,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "stddev": 0.0
+        },
+        "verify_end_ns": {
+          "count": 30,
+          "max": 73386000,
+          "mean": 52219233.333333336,
+          "min": 48651000,
+          "p05": 48923000,
+          "p50": 50128000,
+          "p95": 67569000,
+          "stddev": 5805911.6405747095
+        }
+      }
+    },
+    "verify_result_counts": {
+      "correct": {
+        "failure": 200,
+        "success": 0
+      },
+      "legal": {
+        "failure": 0,
+        "success": 200
+      },
+      "wrong": {
+        "failure": 200,
+        "success": 0
+      }
+    },
+    "wall_stats": {
+      "correct": {
+        "count": 200,
+        "max": 58841000,
+        "mean": 40658180.0,
+        "min": 39119000,
+        "p05": 39524000,
+        "p50": 40421000,
+        "p95": 42506000,
+        "stddev": 1677045.3701278737
+      },
+      "legal": {
+        "count": 200,
+        "max": 44790000,
+        "mean": 40085735.0,
+        "min": 39383000,
+        "p05": 39470000,
+        "p50": 39883000,
+        "p95": 41167000,
+        "stddev": 768281.3324583776
+      },
+      "wrong": {
+        "count": 200,
+        "max": 61150000,
+        "mean": 40575015.0,
+        "min": 38700000,
+        "p05": 39098000,
+        "p50": 40317000,
+        "p95": 42386000,
+        "stddev": 1819979.6853399908
+      }
+    }
+  },
+  "400_102": {
+    "comparison": {
+      "correct_faster": true,
+      "dominant_internal_stage": "g_prime_rref_exit_ns",
+      "median_gap_ns": 867000,
+      "median_ratio": 1.0059359980281806,
+      "stable_distinguishable": false
+    },
+    "input_files": {
+      "timings": "audit/phase3/phase3_timings_400_102.ndjson",
+      "trace_source": "audit/phase3/phase3_trace_source_400_102.jsonl"
+    },
+    "parameter_tag": "400_102",
+    "sample_counts": {
+      "trace_record_count": 18540,
+      "trace_rows": 90,
+      "wall_rows": 600
+    },
+    "target_info": {
+      "sf_g_index": 1,
+      "source_col": 200,
+      "target_output_col": 102,
+      "target_round": 0
+    },
+    "trace_stats": {
+      "correct": {
+        "g0_expand_to_rref_exit_ns": {
+          "count": 30,
+          "max": 121000,
+          "mean": 104233.33333333333,
+          "min": 99000,
+          "p05": 99000,
+          "p50": 102000,
+          "p95": 119000,
+          "stddev": 5715.576619375688
+        },
+        "g_prime_apply_cf_action_with_pivots_exit_ns": {
+          "count": 30,
+          "max": 32000,
+          "mean": 22933.333333333332,
+          "min": 19000,
+          "p05": 20000,
+          "p50": 22000,
+          "p95": 27000,
+          "stddev": 2558.735319797968
+        },
+        "g_prime_rref_entry_ns": {
+          "count": 30,
+          "max": 0,
+          "mean": 0.0,
+          "min": 0,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "stddev": 0.0
+        },
+        "g_prime_rref_exit_ns": {
+          "count": 30,
+          "max": 4250000,
+          "mean": 1866900.0,
+          "min": 1634000,
+          "p05": 1640000,
+          "p50": 1700000,
+          "p95": 2376000,
+          "stddev": 492485.977395331
+        },
+        "reuse_hit_count": {
+          "count": 30,
+          "max": 102,
+          "mean": 102.0,
+          "min": 102,
+          "p05": 102,
+          "p50": 102,
+          "p95": 102,
+          "stddev": 0.0
+        },
+        "row_swap_count": {
+          "count": 30,
+          "max": 2,
+          "mean": 1.2,
+          "min": 0,
+          "p05": 0,
+          "p50": 1,
+          "p95": 2,
+          "stddev": 0.7611243951073873
+        },
+        "rref_event_mean_ns": {
+          "count": 30,
+          "max": 5055.0,
+          "mean": 3714.6666666666665,
+          "min": 3470.0,
+          "p05": 3480.0,
+          "p50": 3555.0,
+          "p95": 5030.0,
+          "stddev": 409.28224249653016
+        },
+        "rref_event_step_count": {
+          "count": 30,
+          "max": 200,
+          "mean": 200.0,
+          "min": 200,
+          "p05": 200,
+          "p50": 200,
+          "p95": 200,
+          "stddev": 0.0
+        },
+        "rref_event_total_ns": {
+          "count": 30,
+          "max": 1011000,
+          "mean": 742933.3333333334,
+          "min": 694000,
+          "p05": 696000,
+          "p50": 711000,
+          "p95": 1006000,
+          "stddev": 81856.44849930602
+        },
+        "verify_begin_ns": {
+          "count": 30,
+          "max": 0,
+          "mean": 0.0,
+          "min": 0,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "stddev": 0.0
+        },
+        "verify_end_ns": {
+          "count": 30,
+          "max": 225750000,
+          "mean": 182142700.0,
+          "min": 167627000,
+          "p05": 169381000,
+          "p50": 176797000,
+          "p95": 216895000,
+          "stddev": 14670117.483369453
+        }
+      },
+      "legal": {
+        "g0_expand_to_rref_exit_ns": {
+          "count": 30,
+          "max": 323000,
+          "mean": 118200.0,
+          "min": 98000,
+          "p05": 99000,
+          "p50": 104000,
+          "p95": 271000,
+          "stddev": 49920.90295381423
+        },
+        "g_prime_apply_cf_action_with_pivots_exit_ns": {
+          "count": 30,
+          "max": 30000,
+          "mean": 22600.0,
+          "min": 19000,
+          "p05": 19000,
+          "p50": 22000,
+          "p95": 26000,
+          "stddev": 2094.327313614499
+        },
+        "g_prime_rref_entry_ns": {
+          "count": 30,
+          "max": 0,
+          "mean": 0.0,
+          "min": 0,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "stddev": 0.0
+        },
+        "g_prime_rref_exit_ns": {
+          "count": 30,
+          "max": 26614000,
+          "mean": 3409233.3333333335,
+          "min": 1631000,
+          "p05": 1650000,
+          "p50": 1703000,
+          "p95": 26025000,
+          "stddev": 6230073.81194628
+        },
+        "reuse_hit_count": {
+          "count": 30,
+          "max": 102,
+          "mean": 102.0,
+          "min": 102,
+          "p05": 102,
+          "p50": 102,
+          "p95": 102,
+          "stddev": 0.0
+        },
+        "row_swap_count": {
+          "count": 30,
+          "max": 1,
+          "mean": 1.0,
+          "min": 1,
+          "p05": 1,
+          "p50": 1,
+          "p95": 1,
+          "stddev": 0.0
+        },
+        "rref_event_mean_ns": {
+          "count": 30,
+          "max": 4260.0,
+          "mean": 3647.1666666666665,
+          "min": 3470.0,
+          "p05": 3480.0,
+          "p50": 3615.0,
+          "p95": 4205.0,
+          "stddev": 185.2709261917639
+        },
+        "rref_event_step_count": {
+          "count": 30,
+          "max": 200,
+          "mean": 200.0,
+          "min": 200,
+          "p05": 200,
+          "p50": 200,
+          "p95": 200,
+          "stddev": 0.0
+        },
+        "rref_event_total_ns": {
+          "count": 30,
+          "max": 852000,
+          "mean": 729433.3333333334,
+          "min": 694000,
+          "p05": 696000,
+          "p50": 723000,
+          "p95": 841000,
+          "stddev": 37054.18523835278
+        },
+        "verify_begin_ns": {
+          "count": 30,
+          "max": 0,
+          "mean": 0.0,
+          "min": 0,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "stddev": 0.0
+        },
+        "verify_end_ns": {
+          "count": 30,
+          "max": 232043000,
+          "mean": 181142033.33333334,
+          "min": 167453000,
+          "p05": 169198000,
+          "p50": 174636000,
+          "p95": 219368000,
+          "stddev": 15666980.120696483
+        }
+      },
+      "wrong": {
+        "g0_expand_to_rref_exit_ns": {
+          "count": 30,
+          "max": 220000,
+          "mean": 106533.33333333333,
+          "min": 98000,
+          "p05": 98000,
+          "p50": 101000,
+          "p95": 115000,
+          "stddev": 21854.902919235203
+        },
+        "g_prime_apply_cf_action_with_pivots_exit_ns": {
+          "count": 30,
+          "max": 32000,
+          "mean": 22466.666666666668,
+          "min": 19000,
+          "p05": 19000,
+          "p50": 22000,
+          "p95": 25000,
+          "stddev": 2417.3700918393815
+        },
+        "g_prime_rref_entry_ns": {
+          "count": 30,
+          "max": 0,
+          "mean": 0.0,
+          "min": 0,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "stddev": 0.0
+        },
+        "g_prime_rref_exit_ns": {
+          "count": 30,
+          "max": 24205000,
+          "mean": 2479933.3333333335,
+          "min": 1625000,
+          "p05": 1642000,
+          "p50": 1687000,
+          "p95": 2191000,
+          "stddev": 4104746.562241071
+        },
+        "reuse_hit_count": {
+          "count": 30,
+          "max": 102,
+          "mean": 102.0,
+          "min": 102,
+          "p05": 102,
+          "p50": 102,
+          "p95": 102,
+          "stddev": 0.0
+        },
+        "row_swap_count": {
+          "count": 30,
+          "max": 1,
+          "mean": 0.4,
+          "min": 0,
+          "p05": 0,
+          "p50": 0,
+          "p95": 1,
+          "stddev": 0.4982728791224398
+        },
+        "rref_event_mean_ns": {
+          "count": 30,
+          "max": 4545.0,
+          "mean": 3643.5,
+          "min": 3475.0,
+          "p05": 3475.0,
+          "p50": 3595.0,
+          "p95": 3930.0,
+          "stddev": 206.54860828920368
+        },
+        "rref_event_step_count": {
+          "count": 30,
+          "max": 200,
+          "mean": 200.0,
+          "min": 200,
+          "p05": 200,
+          "p50": 200,
+          "p95": 200,
+          "stddev": 0.0
+        },
+        "rref_event_total_ns": {
+          "count": 30,
+          "max": 909000,
+          "mean": 728700.0,
+          "min": 695000,
+          "p05": 695000,
+          "p50": 719000,
+          "p95": 786000,
+          "stddev": 41309.72165784073
+        },
+        "verify_begin_ns": {
+          "count": 30,
+          "max": 0,
+          "mean": 0.0,
+          "min": 0,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "stddev": 0.0
+        },
+        "verify_end_ns": {
+          "count": 30,
+          "max": 206756000,
+          "mean": 181759900.0,
+          "min": 169853000,
+          "p05": 170493000,
+          "p50": 179446000,
+          "p95": 197535000,
+          "stddev": 9311563.661235495
+        }
+      }
+    },
+    "verify_result_counts": {
+      "correct": {
+        "failure": 200,
+        "success": 0
+      },
+      "legal": {
+        "failure": 0,
+        "success": 200
+      },
+      "wrong": {
+        "failure": 200,
+        "success": 0
+      }
+    },
+    "wall_stats": {
+      "correct": {
+        "count": 200,
+        "max": 238091000,
+        "mean": 148102270.0,
+        "min": 140470000,
+        "p05": 140952000,
+        "p50": 146058000,
+        "p95": 157916000,
+        "stddev": 10260032.860502591
+      },
+      "legal": {
+        "count": 200,
+        "max": 224487000,
+        "mean": 146911910.0,
+        "min": 140499000,
+        "p05": 140935000,
+        "p50": 145076000,
+        "p95": 156354000,
+        "stddev": 9186229.30511375
+      },
+      "wrong": {
+        "count": 200,
+        "max": 825367000,
+        "mean": 151618875.0,
+        "min": 140788000,
+        "p05": 141727000,
+        "p50": 146925000,
+        "p95": 155829000,
+        "stddev": 48608146.716837525
+      }
+    }
+  }
+}

@@ -254,7 +254,9 @@
 // if defined the gaussian elimination will try to reuse the pivot rows
 // from its last computation, to speed up the computation. Note: this
 // leads to non-constant time code, which is fine in vrfy.
+#ifndef LESS_DISABLE_VERIFY_PIVOT_REUSE
 #define LESS_REUSE_PIVOTS_VY
+#endif
 #define LESS_REUSE_PIVOTS_SG
 
 #ifdef USE_AVX2

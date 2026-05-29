@@ -1,0 +1,38 @@
+{
+  "reuse_trace_path": "audit/phase2/sample_trace_252_45_round1.jsonl",
+  "noreuse_trace_path": "audit/phase2/sample_trace_252_45_round1_noreuse.jsonl",
+  "record_count": {
+    "reuse": 133,
+    "noreuse": 133
+  },
+  "rref_event_stage_counts": {
+    "reuse": {
+      "generator_rref_pivot_reuse_step": 126
+    },
+    "noreuse": {
+      "generator_rref_step": 126
+    }
+  },
+  "reuse_hit_count": {
+    "reuse": 69,
+    "noreuse": 0
+  },
+  "row_swap_count": {
+    "reuse": 0,
+    "noreuse": 69
+  },
+  "rref_step_duration_ns_mean": {
+    "reuse": 22309,
+    "noreuse": 56690
+  },
+  "rref_exit_duration_ns": {
+    "reuse": 3655000,
+    "noreuse": 8157000
+  },
+  "verify_end_duration_ns": {
+    "reuse": 206233000,
+    "noreuse": 380784000
+  },
+  "rref_exit_slowdown_ratio_noreuse_over_reuse": 2.232,
+  "verify_end_slowdown_ratio_noreuse_over_reuse": 1.846
+}

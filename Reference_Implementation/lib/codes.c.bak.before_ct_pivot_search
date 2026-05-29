@@ -80,23 +80,23 @@ int generator_RREF(generator_mat_t *G,
    for(unsigned row_to_reduce = 0; row_to_reduce < K; row_to_reduce++) {
       const uint64_t trace_row_start_ns = less_trace_now_ns();
       unsigned pivot_row = row_to_reduce;
+      /*start by searching the pivot in the col = row*/
       unsigned pivot_column = row_to_reduce;
-      unsigned found_pivot = 0;
+      while( (pivot_column < N) &&
+             (G->values[pivot_row][pivot_column] == 0) ) {
 
-      /* Fixed-scan pivot search: keep the first nonzero candidate via masks. */
-      for (unsigned col = row_to_reduce; col < N; col++) {
-         for (unsigned row = row_to_reduce; row < K; row++) {
-            unsigned candidate = (G->values[row][col] != 0);
-            unsigned take = candidate & (found_pivot ^ 1u);
-            unsigned mask = 0u - take;
+         while ( (pivot_row < K) &&
+                 (G->values[pivot_row][pivot_column] == 0) ) {
+            pivot_row++;
+         }
 
-            pivot_row = (mask & row) | (~mask & pivot_row);
-            pivot_column = (mask & col) | (~mask & pivot_column);
-            found_pivot |= take;
+         if(pivot_row >= K) { /*entire column tail swept*/
+            pivot_column++; /* move to next col */
+            pivot_row = row_to_reduce; /*starting from row to red */
          }
       }
 
-      if (!found_pivot) {
+      if (pivot_column >= N) {
          less_trace_rref_event("generator_rref_step",
                                "generator_RREF",
                                "data-dependent execution",

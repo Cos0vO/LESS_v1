@@ -1,0 +1,59 @@
+{
+  "all_rref_entry_exit_base_addresses_stable": true,
+  "all_snapshot_lengths_valid": true,
+  "first_stage": "verify_begin",
+  "last_stage": "verify_end",
+  "record_count": 133,
+  "record_type_counts": {
+    "control": 2,
+    "event": 126,
+    "snapshot": 5
+  },
+  "rref_entry_exit_base_address_checks": [
+    {
+      "entry_base_address": "0x16faf16a0",
+      "exit_base_address": "0x16faf16a0",
+      "key": [
+        1,
+        0,
+        "G_prime",
+        "generator_RREF_pivot_reuse"
+      ],
+      "matched": true
+    }
+  ],
+  "rref_event_summary": {
+    "duration_ns_max": 61000,
+    "duration_ns_mean": 22309,
+    "duration_ns_min": 0,
+    "event_stage_counts": {
+      "generator_rref_pivot_reuse_step": 126
+    },
+    "reuse_hit_count": 69,
+    "row_swap_count": 0,
+    "step_count": 126
+  },
+  "snapshot_durations_ns": {
+    "g0_expand_to_rref_exit": 58000,
+    "g0_rref_expand_exit": 26000,
+    "g_prime_apply_cf_action_with_pivots_exit": 37000,
+    "g_prime_rref_entry": 0,
+    "g_prime_rref_exit": 3655000
+  },
+  "snapshot_length_mismatches": [],
+  "stage_counts": {
+    "g0_expand_to_rref_exit": 1,
+    "g0_rref_expand_exit": 1,
+    "g_prime_apply_cf_action_with_pivots_exit": 1,
+    "g_prime_rref_entry": 1,
+    "g_prime_rref_exit": 1,
+    "generator_rref_pivot_reuse_step": 126,
+    "verify_begin": 1,
+    "verify_end": 1
+  },
+  "trace_path": "audit/phase2/sample_trace_252_45_round1.jsonl",
+  "verify_sequence_count": 1,
+  "verify_sequences": [
+    1
+  ]
+}

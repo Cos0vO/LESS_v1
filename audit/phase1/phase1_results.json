@@ -1,0 +1,236 @@
+{
+  "phase": 1,
+  "_comment_zh": "Phase 1 的结构化结果。这里保持文件为合法 JSON，因此不用 // 注释，而是用 _comment_zh / comment_zh 字段承载中文说明。",
+  "date": "2026-05-27",
+  "refreshed_at": "2026-05-28",
+  "scope": "Reference_Implementation verify-path baseline only",
+  "scope_zh": "仅覆盖 Reference_Implementation 的 verify 路径基线分析",
+  "current_rebuild": {
+    "comment_zh": "描述当前工作树是否能重新编译，以及这次重建的结果。",
+    "status": "success",
+    "status_zh": "编译成功",
+    "build_dir": "Reference_Implementation/build-phase1-recheck",
+    "command": "cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_POLICY_VERSION_MINIMUM=3.5 && make -j2",
+    "result_zh": "完整重建成功，之前 codes.c 第 119 行的异常字符阻塞已经消失。"
+  },
+  "fresh_recheck_baseline": {
+    "comment_zh": "描述这次重新构建出来的新基线二进制是否正常工作。",
+    "status": "usable",
+    "status_zh": "可用且测试通过",
+    "build_dir": "Reference_Implementation/build-phase1-recheck",
+    "tests": [
+      { "binary": "LESS_test_cat_252_45", "exit_code": 0, "summary": "all good", "summary_zh": "测试通过", "log": "/tmp/LESS_test_cat_252_45.phase1.recheck.log" },
+      { "binary": "LESS_test_cat_252_68", "exit_code": 0, "summary": "all good", "summary_zh": "测试通过", "log": "/tmp/LESS_test_cat_252_68.phase1.recheck.log" },
+      { "binary": "LESS_test_cat_252_192", "exit_code": 0, "summary": "all good", "summary_zh": "测试通过", "log": "/tmp/LESS_test_cat_252_192.phase1.recheck.log" },
+      { "binary": "LESS_test_cat_400_102", "exit_code": 0, "summary": "all good", "summary_zh": "测试通过", "log": "/tmp/LESS_test_cat_400_102.phase1.recheck.log" },
+      { "binary": "LESS_test_cat_400_220", "exit_code": 0, "summary": "all good", "summary_zh": "测试通过", "log": "/tmp/LESS_test_cat_400_220.phase1.recheck.log" },
+      { "binary": "LESS_test_cat_548_137", "exit_code": 0, "summary": "all good", "summary_zh": "测试通过", "log": "/tmp/LESS_test_cat_548_137.phase1.recheck.log" },
+      { "binary": "LESS_test_cat_548_345", "exit_code": 0, "summary": "all good", "summary_zh": "测试通过", "log": "/tmp/LESS_test_cat_548_345.phase1.recheck.log" }
+    ]
+  },
+  "previous_asan_baseline": {
+    "comment_zh": "保留更早的 ASan 基线信息，作为历史证据，但它不再承担当前源码重建状态的主证据角色。",
+    "status": "still_present",
+    "status_zh": "仍然存在",
+    "build_dir": "Reference_Implementation/build-audit-asan"
+  },
+  "matrix_layout": {
+    "comment_zh": "记录 reference 实现里 generator_mat_t 的真实内存布局，以及各参数集下的矩阵尺寸。",
+    "reference_impl_facts": {
+      "comment_zh": "这些是对 reference 实现统一成立的事实。",
+      "fq_elem_type": "uint8_t",
+      "fq_elem_type_zh": "域元素类型是 1 字节的 uint8_t",
+      "n_pad_equals_n": true,
+      "n_pad_equals_n_zh": "在 reference 实现里 N_pad 与 N 相等，因此没有额外列 padding",
+      "generator_mat_values_offset": 0,
+      "generator_mat_values_offset_zh": "values 字段从结构体起始处开始，没有前置偏移",
+      "layout": "contiguous_row_major",
+      "layout_zh": "连续、按行存储",
+      "element_address_formula": "base_address + row * N + col",
+      "element_address_formula_zh": "第 row 行第 col 列元素的地址计算公式"
+    },
+    "targets": [
+      {
+        "category": 252,
+        "target": 45,
+        "k": 126,
+        "n": 252,
+        "n_pad": 252,
+        "generator_bytes": 31776,
+        "row_bytes": 252,
+        "rref_generator_bytes": 16128,
+        "normalized_is_bytes": 15876,
+        "comment_zh": "252/45 参数集下，完整 generator 矩阵总共占 31776 字节，每行 252 字节。"
+      },
+      {
+        "category": 252,
+        "target": 68,
+        "k": 126,
+        "n": 252,
+        "n_pad": 252,
+        "generator_bytes": 31776,
+        "row_bytes": 252,
+        "rref_generator_bytes": 16128,
+        "normalized_is_bytes": 15876,
+        "comment_zh": "252/68 参数集下，布局与 252/45 相同，只是算法目标参数不同。"
+      },
+      {
+        "category": 252,
+        "target": 192,
+        "k": 126,
+        "n": 252,
+        "n_pad": 252,
+        "generator_bytes": 31776,
+        "row_bytes": 252,
+        "rref_generator_bytes": 16128,
+        "normalized_is_bytes": 15876,
+        "comment_zh": "252/192 参数集下，K 与 N 不变，因此矩阵字节布局与其它 252 类参数相同。"
+      },
+      {
+        "category": 400,
+        "target": 102,
+        "k": 200,
+        "n": 400,
+        "n_pad": 400,
+        "generator_bytes": 80000,
+        "row_bytes": 400,
+        "rref_generator_bytes": 40400,
+        "normalized_is_bytes": 40000,
+        "comment_zh": "400/102 参数集下，完整 generator 矩阵总共占 80000 字节，每行 400 字节。"
+      },
+      {
+        "category": 400,
+        "target": 220,
+        "k": 200,
+        "n": 400,
+        "n_pad": 400,
+        "generator_bytes": 80000,
+        "row_bytes": 400,
+        "rref_generator_bytes": 40400,
+        "normalized_is_bytes": 40000,
+        "comment_zh": "400/220 参数集下，布局与 400/102 相同。"
+      },
+      {
+        "category": 548,
+        "target": 137,
+        "k": 274,
+        "n": 548,
+        "n_pad": 548,
+        "generator_bytes": 150176,
+        "row_bytes": 548,
+        "rref_generator_bytes": 75624,
+        "normalized_is_bytes": 75076,
+        "comment_zh": "548/137 参数集下，完整 generator 矩阵总共占 150176 字节，每行 548 字节。"
+      },
+      {
+        "category": 548,
+        "target": 345,
+        "k": 274,
+        "n": 548,
+        "n_pad": 548,
+        "generator_bytes": 150176,
+        "row_bytes": 548,
+        "rref_generator_bytes": 75624,
+        "normalized_is_bytes": 75076,
+        "comment_zh": "548/345 参数集下，布局与 548/137 相同。"
+      }
+    ]
+  },
+  "verify_g_lifecycle": [
+    {
+      "matrix": "G0_rref",
+      "producer": "generator_sample(PK->G_0_seed)",
+      "dependency_class": "public-only",
+      "dependency_class_zh": "仅受公开信息控制",
+      "comment_zh": "从公开的 G_0_seed 采样得到的紧凑 RREF 表示。"
+    },
+    {
+      "matrix": "G0_full",
+      "producer": "generator_rref_expand(&G0_rref)",
+      "dependency_class": "public-only",
+      "dependency_class_zh": "仅受公开信息控制",
+      "comment_zh": "把紧凑 RREF 展开成完整矩阵后的版本。"
+    },
+    {
+      "matrix": "G_prime",
+      "producer": "generator_monomial_mul(&G0_full, &mu_tilde)",
+      "dependency_class": "attacker-observable / data-dependent execution",
+      "dependency_class_zh": "攻击者可观察，并会影响执行轨迹",
+      "comment_zh": "零挑战分支里由 G0_full 和 monomial 作用得到，后续会直接进入 RREF。"
+    },
+    {
+      "matrix": "G0",
+      "producer": "expand_to_rref(PK->SF_G[j], gi_initial_pivot_flags)",
+      "dependency_class": "public-key-controlled",
+      "dependency_class_zh": "受公钥输入控制",
+      "comment_zh": "从压缩的 SF_G 解压得到，malformed public key 会在这里改变后续行为。"
+    },
+    {
+      "matrix": "G_prime",
+      "producer": "apply_cf_action_to_G_with_pivots(&G0, ...)",
+      "dependency_class": "attacker-controlled",
+      "dependency_class_zh": "攻击者可控",
+      "comment_zh": "非零挑战分支里，这是 Bob 替换列攻击最值得观察的矩阵。"
+    },
+    {
+      "matrix": "Ai",
+      "producer": "copy non-pivot columns from post-RREF G_prime",
+      "dependency_class": "derived downstream input",
+      "dependency_class_zh": "下游派生输入",
+      "comment_zh": "从 RREF 之后的 G_prime 中提取非 pivot 列，作为 CF 的输入。"
+    }
+  ],
+  "non_constant_time_evidence": [
+    {
+      "symbol": "generator_RREF",
+      "file": "Reference_Implementation/lib/codes.c",
+      "line_range": "79-99",
+      "reason": "nested pivot-search loops stop at first nonzero candidate",
+      "reason_zh": "两层 pivot 搜索循环会在找到第一个非零候选时提前停止。"
+    },
+    {
+      "symbol": "generator_RREF",
+      "file": "Reference_Implementation/lib/codes.c",
+      "line_range": "105-112",
+      "reason": "conditional row swap and table-based inversion",
+      "reason_zh": "是否交换行以及查哪一个逆元表项，都取决于矩阵内容。"
+    },
+    {
+      "symbol": "fq_inv",
+      "file": "Reference_Implementation/include/fq_arith.h",
+      "line_range": "159-167",
+      "reason": "lookup-table inverse with comment saying input must not be secret",
+      "reason_zh": "fq_inv 是查表实现，而且源码注释已经明确说输入不应该是 secret。"
+    },
+    {
+      "symbol": "generator_RREF_pivot_reuse",
+      "file": "Reference_Implementation/lib/codes.c",
+      "line_range": "152-166",
+      "reason": "data-dependent preprocessing scan over previous pivot flags",
+      "reason_zh": "reuse 预处理会根据旧 pivot 标记和矩阵内容做额外扫描与行交换。"
+    },
+    {
+      "symbol": "generator_RREF_pivot_reuse",
+      "file": "Reference_Implementation/lib/codes.c",
+      "line_range": "194-200",
+      "reason": "reuse hit skips normalization and elimination work",
+      "reason_zh": "命中 reuse 时会直接跳过归一化和消元，因此工作量不同。"
+    },
+    {
+      "symbol": "Ai copy loop",
+      "file": "Reference_Implementation/lib/LESS.c",
+      "line_range": "361-372",
+      "reason": "while loop advances until next non-pivot column",
+      "reason_zh": "提取 Ai 时会一直扫到下一个非 pivot 列，访问次数受 pivot 分布影响。"
+    }
+  ],
+  "summary_zh": {
+    "comment_zh": "这是对 Phase 1 最终结论的中文摘要。",
+    "lifecycle_pinned_down": "verify 侧 G 的来源、流向和原地修改点已经确认。",
+    "layout_pinned_down": "reference 实现中的 generator_mat_t 已确认是连续、row-major、1 字节元素的 K×N 矩阵。",
+    "timing_risks_pinned_down": "当前最主要的 timing 风险集中在 pivot 搜索、pivot reuse 和 fq_inv 查表。",
+    "current_rebuild_is_green": "当前工作树已经可以重新构建，新的 debug 基线通过了同一组 7 个 reference 测试。",
+    "previous_blocker_fixed": "之前位于 codes.c 第 119 行的异常字符编译阻塞已经消失。",
+    "asan_baseline_still_usable": "更早建立的 ASan 基线二进制仍然存在，且与新的测试结果不冲突。"
+  }
+}

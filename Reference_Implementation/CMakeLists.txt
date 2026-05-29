@@ -6,6 +6,9 @@ set(CMAKE_VERBOSE_MAKEFILE OFF)
 
 enable_testing()
 find_package(OpenSSL)
+option(LESS_TRACE_RREF "Enable JSONL tracing for verify-side RREF flow" OFF)
+option(LESS_DISABLE_VERIFY_PIVOT_REUSE "Disable verify-side pivot reuse" OFF)
+option(LESS_BUILD_PHASE3_ORACLE "Build Phase 3 Bob timing-oracle audit harnesses" OFF)
 
 set(default_build_type "Release")
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
@@ -45,6 +48,7 @@ set(SOURCES
         ${PROJECT_SOURCE_DIR}/lib/sort.c
         ${PROJECT_SOURCE_DIR}/lib/canonical.c
         ${PROJECT_SOURCE_DIR}/lib/transpose.c
+        ${PROJECT_SOURCE_DIR}/lib/trace_rref.c
 )
 
 set(HEADERS
@@ -62,9 +66,20 @@ set(HEADERS
         ${PROJECT_SOURCE_DIR}/include/utils.h
         ${PROJECT_SOURCE_DIR}/include/sort.h
         ${PROJECT_SOURCE_DIR}/include/transpose.h
+        ${PROJECT_SOURCE_DIR}/include/trace_rref.h
 )
 
 include_directories(include)
+
+set(PHASE3_ORACLE_SOURCE ${PROJECT_SOURCE_DIR}/../audit/phase3/phase3_bob_oracle.c)
+
+if(LESS_TRACE_RREF)
+  add_compile_definitions(LESS_TRACE_RREF)
+endif()
+
+if(LESS_DISABLE_VERIFY_PIVOT_REUSE)
+  add_compile_definitions(LESS_DISABLE_VERIFY_PIVOT_REUSE)
+endif()
 
 foreach(category "252" "400" "548")
   if(${category} EQUAL "252")
@@ -100,3 +115,16 @@ foreach(category "252" "400" "548")
     add_test(${TARGET_BINARY_NAME} ${TARGET_BINARY_NAME})
   endforeach(optimize_target)
 endforeach(category)
+
+if(LESS_BUILD_PHASE3_ORACLE)
+  foreach(phase3_param "252_45" "252_68" "400_102")
+    string(REPLACE "_" ";" phase3_parts ${phase3_param})
+    list(GET phase3_parts 0 phase3_category)
+    list(GET phase3_parts 1 phase3_target)
+
+    set(TARGET_BINARY_NAME LESS_phase3_bob_cat_${phase3_category}_${phase3_target})
+    add_executable(${TARGET_BINARY_NAME} ${HEADERS} ${SOURCES} ${PHASE3_ORACLE_SOURCE})
+    target_link_libraries(${TARGET_BINARY_NAME} m)
+    set_property(TARGET ${TARGET_BINARY_NAME} APPEND PROPERTY COMPILE_FLAGS "-DCATEGORY=${phase3_category} -DTARGET=${phase3_target}")
+  endforeach()
+endif()

@@ -31,6 +31,7 @@
 #include "utils.h"
 #include "fips202.h"
 #include "sha3.h"
+#include "trace_rref.h"
 
 void LESS_keygen(prikey_t *SK,
                  pubkey_t *PK) {
@@ -268,6 +269,8 @@ int LESS_verify(const pubkey_t *const PK,
                 const char *const m,
                 const uint64_t mlen,
                 const sign_t *const sig) {
+    const uint64_t verify_start_ns = less_trace_now_ns();
+    int verify_result = 0;
     uint8_t fixed_weight_string[T] = {0};
     uint8_t is_pivot_column[N_pad];
     uint8_t g0_initial_pivot_flags[N];
@@ -284,12 +287,13 @@ int LESS_verify(const pubkey_t *const PK,
 
     unsigned char seed_tree[NUM_NODES_SEED_TREE * SEED_LENGTH_BYTES] = {0};
     uint32_t rebuilding_seeds_went_fine;
+    less_trace_verify_begin();
     rebuilding_seeds_went_fine = RebuildGGM(seed_tree,
                                                           published_seed_indexes,
                                                           (unsigned char *) &sig->seed_storage,
                                                           sig->salt);
     if (!rebuilding_seeds_went_fine) {
-        return 0;
+        goto cleanup;
     }
 
     unsigned char linearized_rounds_seeds[T*SEED_LENGTH_BYTES] = {0};
@@ -308,53 +312,183 @@ int LESS_verify(const pubkey_t *const PK,
     LESS_SHA3_INC_INIT(&state);
 
     generator_get_pivot_flags(&G0_rref, g0_initial_pivot_flags);
-    generator_rref_expand(&G0_full, &G0_rref);
+    less_trace_set_round_context(-1, 0, "setup", "public-only");
+    {
+        const uint64_t trace_stage_start_ns = less_trace_now_ns();
+        generator_rref_expand(&G0_full, &G0_rref);
+        less_trace_snapshot_generator("g0_rref_expand_exit",
+                                      "generator_rref_expand",
+                                      "G0_full",
+                                      &G0_full,
+                                      g0_initial_pivot_flags,
+                                      "public-only",
+                                      less_trace_now_ns() - trace_stage_start_ns);
+    }
 
     for (uint32_t i = 0; i < T; i++) {
         memset(is_pivot_column, 0, N_pad);
         if (fixed_weight_string[i] == 0) {
+            less_trace_set_round_context((int)i,
+                                         fixed_weight_string[i],
+                                         "fixed_weight_zero",
+                                         "attacker-controlled");
             monomial_sample_salt(&mu_tilde,
                                  linearized_rounds_seeds + i * SEED_LENGTH_BYTES,
                                  sig->salt,
                                  i);
 
-            generator_monomial_mul(&G_prime, &G0_full, &mu_tilde);
+            {
+                const uint64_t trace_stage_start_ns = less_trace_now_ns();
+                generator_monomial_mul(&G_prime, &G0_full, &mu_tilde);
+                less_trace_snapshot_generator("g_prime_monomial_mul_exit",
+                                              "generator_monomial_mul",
+                                              "G_prime",
+                                              &G_prime,
+                                              NULL,
+                                              "attacker-controlled",
+                                              less_trace_now_ns() - trace_stage_start_ns);
+            }
 #if defined(LESS_REUSE_PIVOTS_VY)
             uint8_t permuted_pivot_flags[N_pad] = {0};
 
             for (uint32_t t = 0; t < N; t++) {
                 permuted_pivot_flags[mu_tilde.permutation[t]] = g0_initial_pivot_flags[t];
             }
+            less_trace_snapshot_generator("g_prime_rref_entry",
+                                          "generator_RREF_pivot_reuse",
+                                          "G_prime",
+                                          &G_prime,
+                                          permuted_pivot_flags,
+                                          "data-dependent execution",
+                                          0);
+            const uint64_t trace_stage_start_ns = less_trace_now_ns();
             if (generator_RREF_pivot_reuse(&G_prime,is_pivot_column, permuted_pivot_flags, VERIFY_PIVOT_REUSE_LIMIT) == 0) {
-                return 0;
+                goto cleanup;
             }
+            less_trace_snapshot_generator("g_prime_rref_exit",
+                                          "generator_RREF_pivot_reuse",
+                                          "G_prime",
+                                          &G_prime,
+                                          is_pivot_column,
+                                          "data-dependent execution",
+                                          less_trace_now_ns() - trace_stage_start_ns);
 #else
+            less_trace_snapshot_generator("g_prime_rref_entry",
+                                          "generator_RREF",
+                                          "G_prime",
+                                          &G_prime,
+                                          NULL,
+                                          "data-dependent execution",
+                                          0);
+            const uint64_t trace_stage_start_ns = less_trace_now_ns();
             if (generator_RREF(&G_prime, is_pivot_column) == 0) {
-                return 0;
+                goto cleanup;
             }
+            less_trace_snapshot_generator("g_prime_rref_exit",
+                                          "generator_RREF",
+                                          "G_prime",
+                                          &G_prime,
+                                          is_pivot_column,
+                                          "data-dependent execution",
+                                          less_trace_now_ns() - trace_stage_start_ns);
 #endif
         } else {
-            expand_to_rref(&G0, PK->SF_G[fixed_weight_string[i] - 1], gi_initial_pivot_flags);
+            less_trace_set_round_context((int)i,
+                                         fixed_weight_string[i],
+                                         "fixed_weight_nonzero",
+                                         "public-key-controlled");
+            {
+                const uint64_t trace_stage_start_ns = less_trace_now_ns();
+                expand_to_rref(&G0, PK->SF_G[fixed_weight_string[i] - 1], gi_initial_pivot_flags);
+                less_trace_snapshot_generator("g0_expand_to_rref_exit",
+                                              "expand_to_rref",
+                                              "G0",
+                                              &G0,
+                                              gi_initial_pivot_flags,
+                                              "public-key-controlled",
+                                              less_trace_now_ns() - trace_stage_start_ns);
+            }
             if (!CheckCanonicalAction(sig->cf_monom_actions[employed_monoms])) {
-                return 0;
+                goto cleanup;
             }
 
 #if defined(LESS_REUSE_PIVOTS_VY)
-            apply_cf_action_to_G_with_pivots(&G_prime,
-                                             &G0,
-                                             sig->cf_monom_actions[employed_monoms],
-                                             gi_initial_pivot_flags,
-                                             g0_permuted_pivot_flags);
+            {
+                const uint64_t trace_stage_start_ns = less_trace_now_ns();
+                apply_cf_action_to_G_with_pivots(&G_prime,
+                                                 &G0,
+                                                 sig->cf_monom_actions[employed_monoms],
+                                                 gi_initial_pivot_flags,
+                                                 g0_permuted_pivot_flags);
+                less_trace_snapshot_generator("g_prime_apply_cf_action_with_pivots_exit",
+                                              "apply_cf_action_to_G_with_pivots",
+                                              "G_prime",
+                                              &G_prime,
+                                              g0_permuted_pivot_flags,
+                                              "attacker-controlled",
+                                              less_trace_now_ns() - trace_stage_start_ns);
+            }
+            less_trace_set_round_context((int)i,
+                                         fixed_weight_string[i],
+                                         "fixed_weight_nonzero",
+                                         "data-dependent execution");
+            less_trace_snapshot_generator("g_prime_rref_entry",
+                                          "generator_RREF_pivot_reuse",
+                                          "G_prime",
+                                          &G_prime,
+                                          g0_permuted_pivot_flags,
+                                          "data-dependent execution",
+                                          0);
+            const uint64_t trace_stage_start_ns = less_trace_now_ns();
             const int ret = generator_RREF_pivot_reuse(&G_prime, is_pivot_column,
                                                        g0_permuted_pivot_flags,
                                                        VERIFY_PIVOT_REUSE_LIMIT);
 #else
-            apply_cf_action_to_G(&G_prime, &G0, sig->cf_monom_actions[employed_monoms]);
+            {
+                const uint64_t trace_stage_start_ns = less_trace_now_ns();
+                apply_cf_action_to_G(&G_prime, &G0, sig->cf_monom_actions[employed_monoms]);
+                less_trace_snapshot_generator("g_prime_apply_cf_action_exit",
+                                              "apply_cf_action_to_G",
+                                              "G_prime",
+                                              &G_prime,
+                                              NULL,
+                                              "attacker-controlled",
+                                              less_trace_now_ns() - trace_stage_start_ns);
+            }
+            less_trace_set_round_context((int)i,
+                                         fixed_weight_string[i],
+                                         "fixed_weight_nonzero",
+                                         "data-dependent execution");
+            less_trace_snapshot_generator("g_prime_rref_entry",
+                                          "generator_RREF",
+                                          "G_prime",
+                                          &G_prime,
+                                          NULL,
+                                          "data-dependent execution",
+                                          0);
+            const uint64_t trace_stage_start_ns = less_trace_now_ns();
             const int ret = generator_RREF(&G_prime, is_pivot_column);
 #endif
             if(ret == 0) {
-                return 0;
+                goto cleanup;
             }
+#if defined(LESS_REUSE_PIVOTS_VY)
+            less_trace_snapshot_generator("g_prime_rref_exit",
+                                          "generator_RREF_pivot_reuse",
+                                          "G_prime",
+                                          &G_prime,
+                                          is_pivot_column,
+                                          "data-dependent execution",
+                                          less_trace_now_ns() - trace_stage_start_ns);
+#else
+            less_trace_snapshot_generator("g_prime_rref_exit",
+                                          "generator_RREF",
+                                          "G_prime",
+                                          &G_prime,
+                                          is_pivot_column,
+                                          "data-dependent execution",
+                                          less_trace_now_ns() - trace_stage_start_ns);
+#endif
 
             employed_monoms++;
         }
@@ -372,7 +506,7 @@ int LESS_verify(const pubkey_t *const PK,
         }
         const int r = CF(&Ai);
         if (r == 0) {
-            return 0;
+            goto cleanup;
         }
 #if defined(USE_AVX2) || defined(USE_NEON)
         for (uint32_t sl = 0; sl < K; sl++) {
@@ -389,7 +523,10 @@ int LESS_verify(const pubkey_t *const PK,
     /* Squeeze output */
     LESS_SHA3_INC_FINALIZE(recomputed_digest, &state);
 
-    return (verify(recomputed_digest, sig->digest,
-                   HASH_DIGEST_LENGTH) == 0);
-} /* end LESS_verify */
+    verify_result = (verify(recomputed_digest, sig->digest,
+                            HASH_DIGEST_LENGTH) == 0);
 
+cleanup:
+    less_trace_verify_end(verify_result, less_trace_now_ns() - verify_start_ns);
+    return verify_result;
+} /* end LESS_verify */
