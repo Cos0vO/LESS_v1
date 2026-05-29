@@ -1,5 +1,50 @@
-*build/
-*compile_commands.json
-*.ipynb_checkpoints/
-*__pycache__/
-*.virtual_documents/
+# macOS and editor metadata
+.DS_Store
+**/.DS_Store
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# CMake and local build outputs
+build/
+build-*/
+**/build/
+**/build-*/
+CMakeFiles/
+**/CMakeFiles/
+CMakeCache.txt
+**/CMakeCache.txt
+cmake_install.cmake
+**/cmake_install.cmake
+Makefile
+**/Makefile
+compile_commands.json
+**/compile_commands.json
+
+# Native compiler and executable outputs
+*.o
+*.obj
+*.a
+*.so
+*.dylib
+*.dll
+*.exe
+*.out
+*.dSYM/
+
+# Python and notebook caches
+__pycache__/
+**/__pycache__/
+.ipynb_checkpoints/
+**/.ipynb_checkpoints/
+.virtual_documents/
+**/.virtual_documents/
+
+# Local audit traces and generated raw data
+audit/**/*.jsonl
+audit/**/*.ndjson
+
+# Generated KAT responses are large and reproducible
+Utilities/KAT_Generation/KAT/*.rsp
