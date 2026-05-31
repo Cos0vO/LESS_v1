@@ -77,6 +77,8 @@ void generator_monomial_mul(generator_mat_t *res,
 
 int generator_RREF(generator_mat_t *G,
                    uint8_t is_pivot_column[N]) {                           // 高斯eliminate
+   unsigned rref_success = 1;
+
    for(unsigned row_to_reduce = 0; row_to_reduce < K; row_to_reduce++) {
       const uint64_t trace_row_start_ns = less_trace_now_ns();
       unsigned pivot_row = row_to_reduce;
@@ -95,51 +97,84 @@ int generator_RREF(generator_mat_t *G,
             found_pivot |= take;
          }
       }
+      unsigned found_mask = 0u - found_pivot;
+      rref_success &= found_pivot;
 
-      if (!found_pivot) {
-         less_trace_rref_event("generator_rref_step",
-                               "generator_RREF",
-                               "data-dependent execution",
-                               row_to_reduce,
-                               pivot_row,
-                               pivot_column,
-                               0,
-                               0,
-                               0,
-                               less_trace_now_ns() - trace_row_start_ns);
-         return 0; /* no pivot candidates left, report failure */
+      for (unsigned col = 0; col < N; col++) {
+         unsigned diff = col ^ pivot_column;
+         unsigned is_pivot_col = ((diff | (0u - diff)) >> (sizeof(unsigned) * 8u - 1u)) ^ 1u;
+         unsigned set_mask = found_mask & (0u - is_pivot_col);
+         is_pivot_column[col] = (uint8_t)((set_mask & 1u) |
+                                          (~set_mask & is_pivot_column[col]));
       }
-      is_pivot_column[pivot_column] = 1; /* pivot found, mark the column*/
 
 
       /* if we found the pivot on a row which has an index > pivot_column
        * we need to swap the rows */
-      const int did_row_swap = (row_to_reduce != pivot_row);
-      if (row_to_reduce != pivot_row) {
-         swap_rows(G->values[row_to_reduce],G->values[pivot_row]);
+      const int did_row_swap = found_pivot & (row_to_reduce != pivot_row);
+      for (unsigned row = row_to_reduce; row < K; row++) {
+         unsigned diff = row ^ pivot_row;
+         unsigned is_pivot_row = ((diff | (0u - diff)) >> (sizeof(unsigned) * 8u - 1u)) ^ 1u;
+         unsigned swap_mask = found_mask & (0u - is_pivot_row);
+
+         for (unsigned col_idx = 0; col_idx < N; col_idx++) {
+            FQ_ELEM tmp = (FQ_ELEM)(swap_mask &
+                                    (G->values[row_to_reduce][col_idx] ^
+                                     G->values[row][col_idx]));
+            G->values[row_to_reduce][col_idx] ^= tmp;
+            G->values[row][col_idx] ^= tmp;
+         }
       }
       pivot_row = row_to_reduce; /* row with pivot now in place */
 
 
-      /* Compute rescaling factor */
-      FQ_ELEM scaling_factor = fq_inv(G->values[pivot_row][pivot_column]);
+      /* Compute rescaling factor without indexing the secret pivot column. */
+      FQ_ELEM pivot_value = 0;
+      for (unsigned col_idx = 0; col_idx < N; col_idx++) {
+         unsigned diff = col_idx ^ pivot_column;
+         unsigned is_pivot_col = ((diff | (0u - diff)) >> (sizeof(unsigned) * 8u - 1u)) ^ 1u;
+         unsigned select_mask = found_mask & (0u - is_pivot_col);
+
+         pivot_value = (FQ_ELEM)((select_mask & G->values[pivot_row][col_idx]) |
+                                 (~select_mask & pivot_value));
+      }
+      FQ_ELEM scaling_factor = fq_inv(pivot_value);
 
       /* rescale pivot row to have pivot = 1. Values at the left of the pivot
        * are already set to zero by previous iterations */
-      for(unsigned i = pivot_column; i < N; i++) {
-         G->values[pivot_row][i] = fq_mul(scaling_factor, G->values[pivot_row][i]);
+      for(unsigned i = 0; i < N; i++) {
+         unsigned diff = i - pivot_column;
+         unsigned ge_pivot_column = (diff >> (sizeof(unsigned) * 8u - 1u)) ^ 1u;
+         unsigned mask = found_mask & (0u - ge_pivot_column);
+         FQ_ELEM scaled = fq_mul(scaling_factor, G->values[pivot_row][i]);
+
+         G->values[pivot_row][i] =
+            (FQ_ELEM)((mask & scaled) | (~mask & G->values[pivot_row][i]));
       }
       /* Subtract the now placed and reduced pivot rows, from the others,
        * after rescaling it */
       for(unsigned row_idx = 0; row_idx < K; row_idx++) {
-         if (row_idx != pivot_row) {
-            FQ_ELEM multiplier = G->values[row_idx][pivot_column];
-            /* all elements before the pivot in the pivot row are null, no need to
-             * subtract them from other rows. */
-            for(unsigned col_idx = 0; col_idx < N; col_idx++) {
-               FQ_ELEM tmp = fq_mul(multiplier, G->values[pivot_row][col_idx]);
-               G->values[row_idx][col_idx] = fq_sub(G->values[row_idx][col_idx], tmp);
-            }
+         unsigned diff = row_idx ^ pivot_row;
+         unsigned is_not_pivot_row = (diff | (0u - diff)) >> (sizeof(unsigned) * 8u - 1u);
+         unsigned mask = found_mask & (0u - is_not_pivot_row);
+         FQ_ELEM multiplier = 0;
+         for (unsigned multiplier_col = 0; multiplier_col < N; multiplier_col++) {
+            unsigned col_diff = multiplier_col ^ pivot_column;
+            unsigned is_pivot_col = ((col_diff | (0u - col_diff)) >> (sizeof(unsigned) * 8u - 1u)) ^ 1u;
+            unsigned select_mask = found_mask & (0u - is_pivot_col);
+
+            multiplier = (FQ_ELEM)((select_mask & G->values[row_idx][multiplier_col]) |
+                                   (~select_mask & multiplier));
+         }
+
+         /* all elements before the pivot in the pivot row are null, no need to
+          * subtract them from other rows. */
+         for(unsigned col_idx = 0; col_idx < N; col_idx++) {
+            FQ_ELEM tmp = fq_mul(multiplier, G->values[pivot_row][col_idx]);
+            FQ_ELEM reduced = fq_sub(G->values[row_idx][col_idx], tmp);
+
+            G->values[row_idx][col_idx] =
+               (FQ_ELEM)((mask & reduced) | (~mask & G->values[row_idx][col_idx]));
          }
       }
 
@@ -149,13 +184,13 @@ int generator_RREF(generator_mat_t *G,
                             row_to_reduce,
                             pivot_row,
                             pivot_column,
-                            1,
+                            found_pivot,
                             did_row_swap,
                             0,
                             less_trace_now_ns() - trace_row_start_ns);
    }
 
-   return 1;
+   return (int) rref_success;
 } /* end generator_RREF */
 
 /// \param G[in/out]: generator matrix K \times N

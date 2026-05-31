@@ -8,6 +8,30 @@ This folder is the index for LESS audit and constant-time RREF experiments.
   mask-based pivot-search change in `generator_RREF()`.
 - `rref-pivot-search-mask-benchmark.csv`: machine-readable copy of the same
   table.
+- `rref-masked-row-swap-benchmark.md`: timing for the next step, replacing the
+  direct pivot-row swap with a fixed-scan masked row swap.
+- `rref-masked-row-swap-benchmark.csv`: machine-readable copy of the row-swap
+  timing table.
+- `rref-constant-time-inverse-benchmark.md`: timing for replacing
+  `fq_inv_table[x]` with a fixed multiplication-chain inverse.
+- `rref-constant-time-inverse-benchmark.csv`: machine-readable copy of the
+  inverse timing table.
+- `rref-fixed-normalization-benchmark.md`: timing for changing pivot-row
+  normalization to scan the full row with a mask.
+- `rref-fixed-normalization-benchmark.csv`: machine-readable copy of the
+  fixed-normalization timing table.
+- `rref-masked-elimination-benchmark.md`: timing for replacing the
+  `row_idx != pivot_row` elimination branch with masked row updates.
+- `rref-masked-elimination-benchmark.csv`: machine-readable copy of the masked
+  elimination timing table.
+- `rref-no-early-return-benchmark.md`: timing for deferring
+  `generator_RREF()` failure return until after all rounds.
+- `rref-no-early-return-benchmark.csv`: machine-readable copy of the no early
+  return timing table.
+- `rref-fixed-pivot-access-benchmark.md`: timing for replacing direct
+  `pivot_column` matrix reads with fixed scans and masked selection.
+- `rref-fixed-pivot-access-benchmark.csv`: machine-readable copy of the fixed
+  pivot-column access benchmark.
 
 ## Previous Experiment Data
 

@@ -156,15 +156,22 @@ FQ_ELEM fq_add(const FQ_ELEM x, const FQ_ELEM y) {
     // return (x + y) % Q;
 }
 
-/// NOTE: maybe don't use it for sensetive data
-static const uint8_t fq_inv_table[128] __attribute__((aligned(64))) = {
-   0, 1, 64, 85, 32, 51, 106, 109, 16, 113, 89, 104, 53, 88, 118, 17, 8, 15, 120, 107, 108, 121, 52, 116, 90, 61, 44, 80, 59, 92, 72, 41, 4, 77, 71, 98, 60, 103, 117, 114, 54, 31, 124, 65, 26, 48, 58, 100, 45, 70, 94, 5, 22, 12, 40, 97, 93, 78, 46, 28, 36, 25, 84, 125, 2, 43, 102, 91, 99, 81, 49, 34, 30, 87, 115, 105, 122, 33, 57, 82, 27, 69, 79, 101, 62, 3, 96, 73, 13, 10, 24, 67, 29, 56, 50, 123, 86, 55, 35, 68, 47, 83, 66, 37, 11, 75, 6, 19, 20, 7, 112, 119, 110, 9, 39, 74, 23, 38, 14, 111, 18, 21, 76, 95, 42, 63, 126, 0
-};
-
-/// NOTE: input must be reduced, and must not be secret.
 static inline
 FQ_ELEM fq_inv(const FQ_ELEM x) {
-   return fq_inv_table[x];
+   /* Q = 127 is prime, so x^(Q-2) = x^125 is x^{-1} for x != 0.
+    * The fixed chain avoids secret-dependent table lookup; x = 0 maps to 0. */
+   const FQ_ELEM x2 = fq_mul(x, x);
+   const FQ_ELEM x4 = fq_mul(x2, x2);
+   const FQ_ELEM x8 = fq_mul(x4, x4);
+   const FQ_ELEM x16 = fq_mul(x8, x8);
+   const FQ_ELEM x32 = fq_mul(x16, x16);
+   const FQ_ELEM x64 = fq_mul(x32, x32);
+
+   FQ_ELEM result = fq_mul(x64, x32); /* x^96 */
+   result = fq_mul(result, x16);      /* x^112 */
+   result = fq_mul(result, x8);       /* x^120 */
+   result = fq_mul(result, x4);       /* x^124 */
+   return fq_mul(result, x);          /* x^125 */
 }
 
 

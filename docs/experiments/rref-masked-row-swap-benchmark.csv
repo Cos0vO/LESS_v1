@@ -1,0 +1,8 @@
+parameter_set,pivot_search_mask_rref_ms,pivot_search_plus_masked_row_swap_rref_ms,incremental_slowdown
+252_192,2.083,3.725,1.79x
+252_68,2.069,2.458,1.19x
+252_45,2.076,4.236,2.04x
+400_220,8.417,9.685,1.15x
+400_102,8.321,10.425,1.25x
+548_345,22.742,25.614,1.13x
+548_137,22.755,25.562,1.12x
