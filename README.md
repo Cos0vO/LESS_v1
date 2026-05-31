@@ -1,3 +1,12 @@
+Optimization
+=============
+
+Personal notes and planned experiments are tracked in
+`docs/optimization-roadmap.md` & `docs/experiments/..`.
+
+Description
+============
+
 The submission for LESS contains the following:
 
 • Reference_Implementation
