@@ -30,6 +30,7 @@
 #include "utils.h"
 #include "codes.h"
 #include "fq_arith.h"
+#include "fq_ct.h"
 #include "parameters.h"
 #include "trace_rref.h"
 #include <assert.h>
@@ -192,6 +193,45 @@ int generator_RREF(generator_mat_t *G,
 
    return (int) rref_success;
 } /* end generator_RREF */
+
+int generator_RREF_ct(generator_mat_t *G,
+                      uint8_t is_pivot_column[N_pad]) {
+   return generator_RREF(G, is_pivot_column);
+}
+
+int generator_RREF_qct_pivot_reuse(generator_mat_t *G,
+                                   uint8_t is_pivot_column[N],
+                                   uint8_t was_pivot_column[N],
+                                   const int pvt_reuse_limit) {
+   (void) was_pivot_column;
+   (void) pvt_reuse_limit;
+   return generator_RREF_ct(G, is_pivot_column);
+}
+
+int generator_RREF_mode(generator_mat_t *G,
+                        uint8_t is_pivot_column[N_pad],
+                        uint8_t was_pivot_column[N_pad],
+                        const int pvt_reuse_limit,
+                        const less_rref_mode_t mode) {
+   switch (mode) {
+      case LESS_RREF_MODE_FAST:
+         if (was_pivot_column != NULL) {
+            return generator_RREF_pivot_reuse(G,
+                                              is_pivot_column,
+                                              was_pivot_column,
+                                              pvt_reuse_limit);
+         }
+         return generator_RREF(G, is_pivot_column);
+      case LESS_RREF_MODE_QCT:
+         return generator_RREF_qct_pivot_reuse(G,
+                                               is_pivot_column,
+                                               was_pivot_column,
+                                               pvt_reuse_limit);
+      case LESS_RREF_MODE_CT:
+      default:
+         return generator_RREF_ct(G, is_pivot_column);
+   }
+}
 
 /// \param G[in/out]: generator matrix K \times N
 /// \param is_pivot_column[out]: N bytes, set to 1 if this column

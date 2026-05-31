@@ -73,6 +73,26 @@ void generator_monomial_mul(generator_mat_t *res,
 int generator_RREF(generator_mat_t *G,
                    uint8_t is_pivot_column[N_pad]);
 
+typedef enum {
+   LESS_RREF_MODE_FAST = 0,
+   LESS_RREF_MODE_CT = 1,
+   LESS_RREF_MODE_QCT = 2
+} less_rref_mode_t;
+
+int generator_RREF_ct(generator_mat_t *G,
+                      uint8_t is_pivot_column[N_pad]);
+
+int generator_RREF_qct_pivot_reuse(generator_mat_t *G,
+                                   uint8_t is_pivot_column[N],
+                                   uint8_t was_pivot_column[N],
+                                   const int pvt_reuse_limit);
+
+int generator_RREF_mode(generator_mat_t *G,
+                        uint8_t is_pivot_column[N_pad],
+                        uint8_t was_pivot_column[N_pad],
+                        const int pvt_reuse_limit,
+                        const less_rref_mode_t mode);
+
 int generator_RREF_pivot_reuse(generator_mat_t *G,
                                  uint8_t is_pivot_column[N],
                                  uint8_t was_pivot_column[N],

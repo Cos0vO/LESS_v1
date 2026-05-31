@@ -8,6 +8,7 @@ enable_testing()
 find_package(OpenSSL)
 option(LESS_TRACE_RREF "Enable JSONL tracing for verify-side RREF flow" OFF)
 option(LESS_DISABLE_VERIFY_PIVOT_REUSE "Disable verify-side pivot reuse" OFF)
+option(LESS_SIGN_FAST_PIVOT_REUSE "Use variable-time pivot reuse in signing for A/B benchmarks" OFF)
 option(LESS_BUILD_PHASE3_ORACLE "Build Phase 3 Bob timing-oracle audit harnesses" OFF)
 
 set(default_build_type "Release")
@@ -54,14 +55,17 @@ set(SOURCES
 set(HEADERS
         ${PROJECT_SOURCE_DIR}/include/api.h
         ${PROJECT_SOURCE_DIR}/include/codes.h
+        ${PROJECT_SOURCE_DIR}/include/ct.h
         ${PROJECT_SOURCE_DIR}/include/fips202.h
         ${PROJECT_SOURCE_DIR}/include/keccakf1600.h
         ${PROJECT_SOURCE_DIR}/include/sha3.h
         ${PROJECT_SOURCE_DIR}/include/fq_arith.h
+        ${PROJECT_SOURCE_DIR}/include/fq_ct.h
         ${PROJECT_SOURCE_DIR}/include/LESS.h
         ${PROJECT_SOURCE_DIR}/include/monomial_mat.h
         ${PROJECT_SOURCE_DIR}/include/parameters.h
         ${PROJECT_SOURCE_DIR}/include/rng.h
+        ${PROJECT_SOURCE_DIR}/include/row_ct.h
         ${PROJECT_SOURCE_DIR}/include/seedtree.h
         ${PROJECT_SOURCE_DIR}/include/utils.h
         ${PROJECT_SOURCE_DIR}/include/sort.h
@@ -79,6 +83,10 @@ endif()
 
 if(LESS_DISABLE_VERIFY_PIVOT_REUSE)
   add_compile_definitions(LESS_DISABLE_VERIFY_PIVOT_REUSE)
+endif()
+
+if(LESS_SIGN_FAST_PIVOT_REUSE)
+  add_compile_definitions(LESS_SIGN_FAST_PIVOT_REUSE)
 endif()
 
 foreach(category "252" "400" "548")

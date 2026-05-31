@@ -159,7 +159,7 @@ size_t LESS_sign(const prikey_t *SK,
                              i);
         generator_monomial_mul(&G0, &full_G0, &mu_tilde);
         memset(is_pivot_column, 0, N_pad);
-#if defined(LESS_REUSE_PIVOTS_SG)
+#if defined(LESS_REUSE_PIVOTS_SG) && defined(LESS_SIGN_FAST_PIVOT_REUSE)
         uint8_t permuted_pivot_flags[N_pad];
         for (uint32_t t = 0; t < N; t++) {
             permuted_pivot_flags[mu_tilde.permutation[t]] = g0_initial_pivot_flags[t];
@@ -168,7 +168,7 @@ size_t LESS_sign(const prikey_t *SK,
             return 0;
         }
 #else
-        if (generator_RREF(&G0, is_pivot_column) == 0) {
+        if (generator_RREF_ct(&G0, is_pivot_column) == 0) {
             return 0;
         }
 #endif
