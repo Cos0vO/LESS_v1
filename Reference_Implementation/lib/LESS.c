@@ -168,7 +168,7 @@ size_t LESS_sign(const prikey_t *SK,
             return 0;
         }
 #else
-        if (generator_RREF_ct(&G0, is_pivot_column) == 0) {
+        if (generator_RREF_ct_level_a_fast(&G0, is_pivot_column) == 0) {
             return 0;
         }
 #endif

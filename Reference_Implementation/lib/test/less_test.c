@@ -139,6 +139,36 @@ void info(void){
 }
 
 
+int rref_level_a_fast_equivalence_test(void) {
+    generator_mat_t input = {0};
+    generator_mat_t strict = {0};
+    generator_mat_t fast = {0};
+    uint8_t strict_pivots[NN] = {0};
+    uint8_t fast_pivots[NN] = {0};
+
+    init_randombytes((const unsigned char *)"rref_eq", 7);
+    for (uint32_t i = 0; i < 3; i++) {
+        generator_rnd(&input);
+        memcpy(&strict, &input, sizeof(strict));
+        memcpy(&fast, &input, sizeof(fast));
+        memset(strict_pivots, 0, sizeof(strict_pivots));
+        memset(fast_pivots, 0, sizeof(fast_pivots));
+
+        const int strict_ret = generator_RREF_ct(&strict, strict_pivots);
+        const int fast_ret = generator_RREF_ct_level_a_fast(&fast, fast_pivots);
+        if (strict_ret != fast_ret ||
+            memcmp(&strict, &fast, sizeof(generator_mat_t)) != 0 ||
+            memcmp(strict_pivots, fast_pivots, N) != 0) {
+            printf("RREF Level-A-fast equivalence: ko at iteration %u\n", i);
+            return -1;
+        }
+    }
+
+    puts("RREF Level-A-fast equivalence: ok");
+    return 0;
+}
+
+
 #define NUMBER_OF_TESTS 1
 #define MLEN 160
 
@@ -240,5 +270,8 @@ int main(int argc, char* argv[]){
     (void)argc;
     (void)argv;
     // LESS_sign_verify_test_multiple();
+    if (rref_level_a_fast_equivalence_test() != 0) {
+        return -1;
+    }
     return LESS_sign_verify_test_KAT();
 }

@@ -32,6 +32,12 @@ This folder is the index for LESS audit and constant-time RREF experiments.
   `pivot_column` matrix reads with fixed scans and masked selection.
 - `rref-fixed-pivot-access-benchmark.csv`: machine-readable copy of the fixed
   pivot-column access benchmark.
+- `rref-level-a-fast-pivot-access-benchmark.md`: timing for the Level-A fast
+  variant that restores direct `pivot_column` access while preserving the
+  fixed/ masked schedule for secret-derived pivot-row behavior.
+- `rref-simd-row-fma-optimization.md`: Chinese running log for Row FMA
+  optimization, including the helper extraction step and the opt-in NEON
+  experiment.
 
 ## Previous Experiment Data
 

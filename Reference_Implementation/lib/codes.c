@@ -25,6 +25,7 @@
 #include "codes.h"
 #include "fq_ct.h"
 #include "parameters.h"
+#include "row_ct.h"
 #include "trace_rref.h"
 
 /// 交换 r 和 s 中的 N 个 uint8 元素。
@@ -171,13 +172,92 @@ int generator_RREF_ct(generator_mat_t *G,
    return generator_RREF(G, is_pivot_column);
 }
 
+int generator_RREF_ct_level_a_fast(generator_mat_t *G,
+                                   uint8_t is_pivot_column[N_pad]) {
+   unsigned rref_success = 1;
+
+   for (unsigned row_to_reduce = 0; row_to_reduce < K; row_to_reduce++) {
+      const uint64_t trace_row_start_ns = less_trace_now_ns();
+      unsigned pivot_row = row_to_reduce;
+      unsigned pivot_column = row_to_reduce;
+      ct_mask_t found_mask = CT_FALSE;
+
+      for (unsigned col = row_to_reduce; col < N; col++) {
+         for (unsigned row = row_to_reduce; row < K; row++) {
+            const ct_mask_t take = fq_isnonzero_ct(G->values[row][col]) & ~found_mask;
+
+            pivot_row = ct_select_u32(take, row, pivot_row);
+            pivot_column = ct_select_u32(take, col, pivot_column);
+            found_mask |= take;
+         }
+      }
+      const unsigned found_pivot = found_mask & 1u;
+      rref_success &= found_pivot;
+
+      for (unsigned col = 0; col < N; col++) {
+         const ct_mask_t set_mask = found_mask & ct_eq_u32(col, pivot_column);
+         is_pivot_column[col] = ct_select_u8(set_mask, 1, is_pivot_column[col]);
+      }
+
+      const int did_row_swap =
+         (int)((found_mask & ct_is_nonzero_u32(row_to_reduce ^ pivot_row)) & 1u);
+      for (unsigned row = row_to_reduce; row < K; row++) {
+         const ct_mask_t swap_mask = found_mask & ct_eq_u32(row, pivot_row);
+
+         for (unsigned col_idx = 0; col_idx < N; col_idx++) {
+            FQ_ELEM tmp = (FQ_ELEM)(swap_mask &
+                                    (G->values[row_to_reduce][col_idx] ^
+                                     G->values[row][col_idx]));
+            G->values[row_to_reduce][col_idx] ^= tmp;
+            G->values[row][col_idx] ^= tmp;
+         }
+      }
+      pivot_row = row_to_reduce;
+
+      const FQ_ELEM pivot_value =
+         fq_select_ct(found_mask, G->values[pivot_row][pivot_column], 0);
+      const FQ_ELEM scaling_factor = fq_inv_ct_safe(pivot_value, found_mask);
+
+      for (unsigned i = 0; i < N; i++) {
+         const ct_mask_t mask = found_mask & ct_ge_u32(i, pivot_column);
+         const FQ_ELEM scaled = fq_mul_ct(scaling_factor, G->values[pivot_row][i]);
+
+         G->values[pivot_row][i] = fq_select_ct(mask, scaled, G->values[pivot_row][i]);
+      }
+
+      for (unsigned row_idx = 0; row_idx < K; row_idx++) {
+         const ct_mask_t mask = found_mask & ~ct_eq_u32(row_idx, pivot_row);
+         const FQ_ELEM multiplier =
+            fq_select_ct(found_mask, G->values[row_idx][pivot_column], 0);
+
+         ct_cond_fma_row_level_a(G->values[row_idx],
+                                 G->values[pivot_row],
+                                 multiplier,
+                                 mask);
+      }
+
+      less_trace_rref_event("generator_rref_step",
+                            "generator_RREF_ct_level_a_fast",
+                            "level-a direct pivot-column access",
+                            row_to_reduce,
+                            pivot_row,
+                            pivot_column,
+                            found_pivot,
+                            did_row_swap,
+                            0,
+                            less_trace_now_ns() - trace_row_start_ns);
+   }
+
+   return (int) rref_success;
+}
+
 int generator_RREF_qct_pivot_reuse(generator_mat_t *G,
                                    uint8_t is_pivot_column[N],
                                    uint8_t was_pivot_column[N],
                                    const int pvt_reuse_limit) {
    (void) was_pivot_column;
    (void) pvt_reuse_limit;
-   return generator_RREF_ct(G, is_pivot_column);
+   return generator_RREF_ct_level_a_fast(G, is_pivot_column);
 }
 
 int generator_RREF_mode(generator_mat_t *G,

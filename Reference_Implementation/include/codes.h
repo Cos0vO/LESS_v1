@@ -82,6 +82,9 @@ typedef enum {
 int generator_RREF_ct(generator_mat_t *G,
                       uint8_t is_pivot_column[N_pad]);
 
+int generator_RREF_ct_level_a_fast(generator_mat_t *G,
+                                   uint8_t is_pivot_column[N_pad]);
+
 int generator_RREF_qct_pivot_reuse(generator_mat_t *G,
                                    uint8_t is_pivot_column[N],
                                    uint8_t was_pivot_column[N],
